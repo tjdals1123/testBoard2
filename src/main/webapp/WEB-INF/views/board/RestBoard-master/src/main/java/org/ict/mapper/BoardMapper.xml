@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper 
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="org.ict.mapper.BoardMapper">
+	
+	<sql id="search">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				and (title like CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'c'.toString()">
+				and (content like CONCAT('%', #{keyword}, '%'))
+			</if>
+			
+			<if test="searchType == 'w'.toString()">
+				and (writer like CONCAT('%', #{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	<sql id="searchCount">
+		<if test="searchType != null">
+			<if test="searchType == 't'.toString()">
+				where (title like CONCAT('%', #{keyword}, '%'))
+			</if>
+			<if test="searchType == 'c'.toString()">
+				where (content like CONCAT('%', #{keyword}, '%'))
+			</if>
+			
+			<if test="searchType == 'w'.toString()">
+				where (writer like CONCAT('%', #{keyword}, '%'))
+			</if>
+		</if>
+	</sql>
+	
+	
+	<select id="list" resultType="org.ict.domain.BoardVO">
+		select * from ictboard where bno > 0
+	</select>
+	
+	<select id="listCriteria" resultType="org.ict.domain.BoardVO">
+		select * from ictboard where bno > 0
+		ORDER BY bno DESC, regdate DESC
+		LIMIT #{pageStart}, #{number}
+	</select>
+	
+	<insert id="insert">
+		insert into ictboard (title, writer, content) values (#{title}, #{writer}, #{content})
+	</insert>
+	
+	<update id="modify">
+		update ictboard set title = #{title}, content = #{content}, updatedate = now() where bno = #{bno}
+	</update>
+	
+	<delete id="remove">
+		delete from ictboard where bno = #{bno}
+	</delete>
+	
+	<select id="read" resultType="org.ict.domain.BoardVO">
+		select * from ictboard where bno = #{bno}
+	</select>
+	
+	<select id = "totalcount" resultType="int">
+		select count(*) from ictboard
+	</select>
+	
+	<select id = "listSearch" resultType="org.ict.domain.BoardVO">
+	
+		select * from ictboard where bno > 0
+		
+		<include refid="search"></include>
+		
+		ORDER BY bno DESC, regdate DESC
+		LIMIT #{cri.pageStart}, #{cri.number}
+	
+	</select> 
+	
+	<select id="searchCountPage" resultType="int">
+		
+		SELECT count(@ROWNUM:=@ROWNUM+1), A.*
+		FROM ictboard A, (SELECT @ROWNUM:=0) R
+		
+		<include refid="searchCount"></include>
+		
+		
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+

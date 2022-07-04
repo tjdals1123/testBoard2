@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jeon.mapper.ReplyMapper">
+
+	<select id="getList"
+			resultType = "org.jeon.domain.ReplyVO">
+		SELECT * FROM reply
+			WHERE bno = #{bno}
+			ORDER BY rno DESC		
+	</select>
+	
+	<update id="update">
+		UPDATE reply
+			set
+		replytext = #{replytext}, updatedate = now()
+		WHERE rno = #{rno}
+	</update>
+	<insert id = "create">
+		INSERT INTO REPLY (bno, replytext, replyer)
+		VALUES (#{bno},#{replytext},#{replyer})
+	</insert>
+	<delete id = "delete">
+		DELETE FROM reply
+		WHERE rno = #{rno}
+	</delete>
+	<select id = "conversationList"
+			resultType = "org.jeon.domain.ConversationVO">
+		SELECT * 
+		  FROM conversation
+		 WHERE requesttime LIKE '${date}%'
+		   AND userId = #{userId}
+	</select>
+
+
+
+<insert id="conversationListInsert" parameterType="java.util.List">
+	
+	insert into conversation2
+	(
+	botId,
+	botName,
+	sessionId,
+	versionId,
+	seqNum,
+	responseCode,
+	userId,
+	userName,
+	chnnelId,
+	request,
+	response,
+	requestTime
+	)
+	values
+	<foreach item="item" index="index" collection="list" separator=",">
+	(
+	#{item.botId}
+	,#{item.botName}
+	,#{item.sessionId}
+	,#{item.versionId}
+	,#{item.seqNum}
+	,#{item.responseCode}
+	,#{item.userId}
+	,#{item.userName}
+	,#{item.chnnelId}
+	,#{item.request}
+	,#{item.response}
+	,#{item.requestTime}
+	)
+	</foreach>
+	
+	</insert>
+
+</mapper>

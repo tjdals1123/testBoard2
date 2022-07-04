@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+"http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="org.jeon.mapper.RestBoardMapper">
+
+	<select id="RestBoardList" resultType = "org.jeon.domain.BoardVO" parameterType="org.jeon.domain.SearchCriteria">
+	
+	SELECT bno, title, content, writer, regdate, updatedate 
+	  FROM BOARD
+	 ORDER BY BNO DESC
+	 LIMIT #{page} , #{number}
+	  ;
+	
+	</select>
+
+</mapper>
