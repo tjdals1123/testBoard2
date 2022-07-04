@@ -134,38 +134,38 @@ public class BoardController {
 
 	@GetMapping("/ajaxTest")
 	@Scheduled(cron = "0/1 * * * * *")
-	public void ajaxTest() throws IOException {
+	public String ajaxTest() throws IOException {
 			
-//			String  jsonInString = "";
-//			RestTemplate restTemplate = new RestTemplate();
-//			ObjectMapper mapper = new ObjectMapper();	
-//
-//			LocalDate now = LocalDate.now();
-//			DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
-//			String formatedNow = now.format(formatter);
-//
-//			//URL url = new URL("http://localhost:8080/replies/conversation/2022-07-01/tjdals1122");
-//			
-//			String url = "http://localhost:8080/replies/conversation/"+formatedNow+"/tjdals1122";
-//			HttpHeaders header = new HttpHeaders();
-//			HttpEntity<?> entity = new HttpEntity<>(header);
-//			UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
-//			
-//			ResponseEntity<?> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Object.class);
-//			
-////			result.put("statusCode", resultMap.getStatusCodeValue());
-////			result.put("header", resultMap.getHeaders());
-////			result.put("body", resultMap.getBody());
-//			
-//			jsonInString = mapper.writeValueAsString(resultMap.getBody());
-//			List<ConversationVO> list = mapper.readValue(jsonInString, new TypeReference<List<ConversationVO>>() {});
-//			
-//			rservice.conversationListInsert(list);
-//			
-//			System.out.println("Conversation API 호출 완료");
-//			
-//		return "/board/ajaxTest";
+		String  jsonInString = "";
+		RestTemplate restTemplate = new RestTemplate();
+		ObjectMapper mapper = new ObjectMapper();	
+
+		LocalDate now = LocalDate.now();
+		DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+		String formatedNow = now.format(formatter);
+
+		//URL url = new URL("http://localhost:8080/replies/conversation/2022-07-01/tjdals1122");
 		
+		String url = "http://localhost:8080/replies/conversation/"+formatedNow+"/tjdals1122";
+		HttpHeaders header = new HttpHeaders();
+		HttpEntity<?> entity = new HttpEntity<>(header);
+		UriComponents uri = UriComponentsBuilder.fromHttpUrl(url).build();
+		
+		ResponseEntity<?> resultMap = restTemplate.exchange(uri.toString(), HttpMethod.GET, entity, Object.class);
+		
+//			result.put("statusCode", resultMap.getStatusCodeValue());
+//			result.put("header", resultMap.getHeaders());
+//			result.put("body", resultMap.getBody());
+		
+		jsonInString = mapper.writeValueAsString(resultMap.getBody());
+		List<ConversationVO> list = mapper.readValue(jsonInString, new TypeReference<List<ConversationVO>>() {});
+		
+		rservice.conversationListInsert(list);
+		
+		System.out.println("Conversation API 호출 완료");
+		
+	return "/board/ajaxTest";
+	
 		System.out.println("매초마다 실행");
 	}
 	
